@@ -98,6 +98,7 @@ let
         else if final.isNetBSD                then "nblibc"
         else if final.isAvr                   then "avrlibc"
         else if final.isGhcjs                 then null
+        else if final.isHermit                then "newlib"
         else if final.isNone                  then "newlib"
         # TODO(@Ericson2314) think more about other operating systems
         else                                     "native/impure";
@@ -154,6 +155,7 @@ let
           wasi = "Wasi";
           redox = "Redox";
           genode = "Genode";
+          hermit = "Hermit";
         }.${final.parsed.kernel.name} or null;
 
          # uname -m

@@ -18,6 +18,9 @@ let
     # Genode
     "aarch64-genode" "i686-genode" "x86_64-genode"
 
+    # Hermit
+    "x86_64-hermit" "aarch64-hermit" "riscv64-hermit"
+
     # illumos
     "x86_64-solaris"
 
@@ -112,6 +115,7 @@ in {
   redox         = filterDoubles predicates.isRedox;
   windows       = filterDoubles predicates.isWindows;
   genode        = filterDoubles predicates.isGenode;
+  hermit        = filterDoubles predicates.isHermit;
 
   embedded      = filterDoubles predicates.isNone;
 

@@ -249,6 +249,25 @@ rec {
     libc = "relibc";
   };
 
+  # 
+  # Hermit 
+  # 
+
+  x86_64-unknown-hermit = {
+    config = "x86_64-unknown-hermit";
+    libc = "newlib";
+  };
+
+  aarch64-unknown-hermit = {
+    config = "aarch64-unknown-hermit";
+    libc = "newlib";
+  };
+
+  riscv64-unknown-hermit = {
+    config = "riscv64-unknown-hermit";
+    libc = "newlib";
+  };
+
   #
   # Darwin
   #
