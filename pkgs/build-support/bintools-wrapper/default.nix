@@ -63,6 +63,8 @@
 
 # Darwin code signing support utilities
 , postLinkSignHook ? null, signingUtils ? null
+# Hermit OS specific dependencies
+, hermit-os ? null
 }:
 
 assert propagateDoc -> bintools ? man;
@@ -70,6 +72,7 @@ assert nativeTools -> !propagateDoc && nativePrefix != "";
 assert !nativeTools -> bintools != null && coreutils != null && gnugrep != null;
 assert !(nativeLibc && noLibc);
 assert (noLibc || nativeLibc) == (libc == null);
+assert (libc != null && stdenvNoCC.targetPlatform.isHermit) -> hermit-os != null;
 
 let
   inherit (lib)
@@ -350,6 +353,10 @@ stdenvNoCC.mkDerivation {
 
     + optionalString targetPlatform.isDarwin ''
       echo "-arch ${targetPlatform.darwinArch}" >> $out/nix-support/libc-ldflags
+    ''
+
+    + optionalString (libc != null && targetPlatform.isHermit) '' 
+      echo "-L${getLib hermit-os.kernel}/lib" >> $out/nix-support/libc-cflags
     ''
 
     ##

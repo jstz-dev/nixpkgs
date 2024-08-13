@@ -13,6 +13,8 @@ in
         "-O2 -idirafter ${lib.getDev dep}${dep.incdir or "/include"}"
       ] ++ lib.optionals (! withoutTargetLibc) [
         "-B${lib.getLib dep}${dep.libdir or "/lib"}"
+      ] ++ lib.optionals targetPlatform.isHermit [
+        "-fpermissive"
       ]);
     in mkFlags libcCross langD
        ++ lib.optionals (!withoutTargetLibc) (mkFlags (threadsCross.package or null) langD)

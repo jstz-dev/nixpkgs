@@ -175,7 +175,11 @@ let
         zip
         zlib
       ;
-    } // optionalAttrs (!atLeast7) {
+    } 
+    // optionalAttrs (stdenv.targetPlatform.isHermit) {
+      inherit flex;
+    }
+    // optionalAttrs (!atLeast7) {
       inherit
         boehmgc
         flex
@@ -258,7 +262,12 @@ pipe ((callFile ./common/builder.nix {}) ({
     repo = "gcc";
     rev = "f360ac095028d286fc6dde4d02daed48f59813fa"; # `redox` branch
     sha256 = "1an96h8l58pppyh3qqv90g8hgcfd9hj7igvh2gigmkxbrx94khfl";
-  } else fetchurl {
+  } else if is14 && stdenv.targetPlatform.isHermit then fetchFromGitHub {
+    owner = "jstz-dev";
+    repo = "hermit-gcc";
+    rev = "8307d7b1cf0960ec7202065b4d67d512fcca58c8";
+    sha256 = "sha256-z8YSKrQXFg6j8CyXEP4grX2KZ4bOQJKTu11XIP16o4U=";
+  } else (fetchurl {
     url = if atLeast7
           then "mirror://gcc/releases/gcc-${version}/gcc-${version}.tar.xz"
           else if atLeast6
@@ -266,7 +275,9 @@ pipe ((callFile ./common/builder.nix {}) ({
           else "mirror://gnu/gcc/gcc-${version}/gcc-${version}.tar.bz2";
     ${if is10 || is11 || is13 then "hash" else "sha256"} =
       gccVersions.srcHashForVersion version;
-  };
+  });
+
+  dontUpdateAutotoolsGnuConfigScripts = stdenv.targetPlatform.isHermit;
 
   inherit patches;
 
@@ -419,7 +430,9 @@ pipe ((callFile ./common/builder.nix {}) ({
     inherit langJava;
   } // optionalAttrs atLeast6 {
     NIX_LDFLAGS = optionalString hostPlatform.isSunOS "-lm";
-  });
+  }) // optionalAttrs targetPlatform.isHermit {
+    NIX_CFLAGS_COMPILE = "-fpermissive";
+  };
 
   passthru = {
     inherit langC langCC langObjC langObjCpp langAda langFortran langGo langD langJava version;

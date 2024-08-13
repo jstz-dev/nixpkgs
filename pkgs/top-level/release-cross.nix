@@ -264,6 +264,10 @@ in
   # successfully cross-compile to Redox so far
   x86_64-redox = mapTestOnCross systems.examples.x86_64-unknown-redox embedded;
 
+  x86_64-hermit = mapTestOnCross systems.examples.x86_64-unknown-hermit embedded;
+  aarch64-hermit = mapTestOnCross systems.examples.aarch64-unknown-hermit embedded;
+  riscv64-hermit = mapTestOnCross systems.examples.riscv64-unknown-hermit embedded;
+
   /* Cross-built bootstrap tools for every supported platform */
   bootstrapTools = let
     linuxTools = import ../stdenv/linux/make-bootstrap-tools-cross.nix { system = "x86_64-linux"; };

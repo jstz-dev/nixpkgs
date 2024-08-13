@@ -54,12 +54,16 @@
 , gccForLibs ? if useCcForLibs then cc else null
 , fortify-headers ? null
 , includeFortifyHeaders ? null
+
+# Hermit OS specific dependencies
+, hermit-os ? null
 }:
 
 assert nativeTools -> !propagateDoc && nativePrefix != "";
 assert !nativeTools -> cc != null && coreutils != null && gnugrep != null;
 assert !(nativeLibc && noLibc);
 assert (noLibc || nativeLibc) == (libc == null);
+assert (libc != null && stdenvNoCC.targetPlatform.isHermit) -> hermit-os != null;
 
 let
   inherit (lib)
@@ -679,6 +683,10 @@ stdenvNoCC.mkDerivation {
 
     + optionalString targetPlatform.isAndroid ''
       echo "-D__ANDROID_API__=${targetPlatform.sdkVer}" >> $out/nix-support/cc-cflags
+    ''
+
+    + optionalString (libc != null && targetPlatform.isHermit) ''
+      echo "-B${getLib hermit-os.kernel}/lib" >> $out/nix-support/libc-crt1-cflags
     ''
 
     # There are a few tools (to name one libstdcxx5) which do not work

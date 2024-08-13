@@ -15194,6 +15194,7 @@ with pkgs;
 
   default-gcc-version =
     if (with stdenv.targetPlatform; isVc4 || libc == "relibc") then 6
+    else if stdenv.targetPlatform.isHermit then 14
     else 13;
   gcc = pkgs.${"gcc${toString default-gcc-version}"};
   gccFun = callPackage ../development/compilers/gcc;
@@ -20717,6 +20718,7 @@ with pkgs;
     else if name == "newlib" && stdenv.targetPlatform.isMsp430 then targetPackages.msp430NewlibCross or msp430NewlibCross
     else if name == "newlib" && stdenv.targetPlatform.isVc4 then targetPackages.vc4-newlib or vc4-newlib
     else if name == "newlib" && stdenv.targetPlatform.isOr1k then targetPackages.or1k-newlib or or1k-newlib
+    else if name == "newlib" && stdenv.targetPlatform.isHermit then targetPackages.hermit-os.newlib or hermit-os.newlib
     else if name == "newlib" then targetPackages.newlibCross or newlibCross
     else if name == "newlib-nano" then targetPackages.newlib-nanoCross or newlib-nanoCross
     else if name == "musl" then targetPackages.muslCross or muslCross
@@ -20748,6 +20750,8 @@ with pkgs;
   };
 
   relibc = callPackage ../development/libraries/relibc { };
+
+  hermit-os = callPackage ../development/misc/hermit { };
 
   # Only supported on Linux and only on glibc
   glibcLocales =
