@@ -6,7 +6,7 @@ crossLibcStdenv.mkDerivation {
     owner = "jstz-dev";
     repo = "hermit-newlib";
     rev = "refs/heads/releases/newlib-4.3.0";
-    sha256 = "sha256-hub7Fg2GCe5CPI6uXASXrgFz47+a/bUbhMB+tzxk+M0=";
+    sha256 = "sha256-nJUmGib8VjtgzbCiWWwhn7EY/f+gbMM+lDrnX8zs3YU=";
   };
   
   dontUpdateAutotoolsGnuConfigScripts = true;
@@ -15,7 +15,7 @@ crossLibcStdenv.mkDerivation {
   nativeBuildInputs = [ texinfo flex bison ];
   depsBuildBuild = [ buildPackages.stdenv.cc ];
 
-  env.NIX_CFLAGS_COMPILE = "-fpermissive";
+  env.NIX_CFLAGS_COMPILE = "-fPIC -fpermissive";
   # newlib expects CC to build for build platform, not host platform
   preConfigure = ''
     export CC=cc

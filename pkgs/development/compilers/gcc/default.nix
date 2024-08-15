@@ -431,7 +431,7 @@ pipe ((callFile ./common/builder.nix {}) ({
   } // optionalAttrs atLeast6 {
     NIX_LDFLAGS = optionalString hostPlatform.isSunOS "-lm";
   }) // optionalAttrs targetPlatform.isHermit {
-    NIX_CFLAGS_COMPILE = "-fpermissive";
+    NIX_CFLAGS_COMPILE = "-fPIC -fpermissive";
   };
 
   passthru = {
