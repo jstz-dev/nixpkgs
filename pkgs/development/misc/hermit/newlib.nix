@@ -6,7 +6,7 @@ crossLibcStdenv.mkDerivation {
     owner = "jstz-dev";
     repo = "hermit-newlib";
     rev = "refs/heads/releases/newlib-4.3.0";
-    sha256 = "sha256-nJUmGib8VjtgzbCiWWwhn7EY/f+gbMM+lDrnX8zs3YU=";
+    sha256 = "sha256-449cWwDRO8TkBzSP2xoLCPvXYSiJPfcUa/u2RZxkbdI=";
   };
   
   dontUpdateAutotoolsGnuConfigScripts = true;
