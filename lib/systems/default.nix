@@ -191,7 +191,7 @@ let
       # don't support dynamic linking, but don't get the `staticMarker`.
       # `pkgsStatic` sets `isStatic=true`, so `pkgsStatic.hostPlatform` always
       # has the `staticMarker`.
-      isStatic = final.isWasi || final.isRedox;
+      isStatic = final.isWasi || final.isRedox || final.isHermit;
 
       # Just a guess, based on `system`
       inherit
